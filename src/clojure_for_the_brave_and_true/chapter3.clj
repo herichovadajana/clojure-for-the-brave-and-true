@@ -22,14 +22,13 @@
    {:name "left-achilles" :size 1}
    {:name "left-foot" :size 2}])
 
-
 (defn matching-part
   "create right body part from left body part"
   [body-part]
   (update body-part :name #(str/replace % #"^left-" "right-")))
 
 (defn symmetrize-body-parts
-  "Expect a seq of maps that have :name and :size. If the name contains the left body part, function will add the right body part into seq."
+  "Expects a seq of maps that have :name and :size. If the name contains the left body part, function will add the right body part into seq."
   [asym-body-parts]
   (reduce (fn [acc {:keys [name size] :as body-part}]
             (conj acc (matching-part body-part)))
@@ -41,9 +40,8 @@
 (defn matching-part-bs [part]
   {:name (clojure.string/replace (:name part) #"^left-""right-") :size (:size part)})
 
-
 (defn symmetrize-body-parts-bs
-  "Expect a seq of maps that have :name and :size."
+  "Expects a seq of maps that have :name and :size."
   [asym-body-parts]
   (loop [remaining-asym-parts asym-body-parts
          final-body-parts []]
@@ -52,7 +50,3 @@
       (let [[part & remaining] remaining-asym-parts]
         (recur remaining
                (into final-body-parts (set [part (matching-part part)])))))))
-
-
-
-
