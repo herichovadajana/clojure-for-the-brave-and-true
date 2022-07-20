@@ -5,10 +5,13 @@
 ;; Test are comparing results of my solutions to results of solutions written in book
 
 (def body-part {:name "left-arm" :size 10})
+(def symetric-body-part {:name "head" :size 2})
 
 (deftest matching-part
   (is (= (ch3/matching-part body-part)
-         (ch3/matching-part-bs body-part))))
+         (ch3/matching-part-bs body-part)))
+  (is (= (ch3/matching-part symetric-body-part)
+         (ch3/matching-part-bs symetric-body-part))))
 
 (deftest symmetrize-body-parts
   (testing "That both functions return the same number of body parts"
@@ -17,3 +20,4 @@
   (testing "That return set contains the same values"
     (is (= (set (ch3/symmetrize-body-parts ch3/asym-hobbit-body-parts))
            (set (ch3/symmetrize-body-parts-bs ch3/asym-hobbit-body-parts))))))
+
