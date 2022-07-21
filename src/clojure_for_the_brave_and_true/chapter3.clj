@@ -50,3 +50,27 @@
       (let [[part & remaining] remaining-asym-parts]
         (recur remaining
                (into final-body-parts (set [part (matching-part part)])))))))
+
+
+;; Additional exercise from book without book solution: Spider expander that multiply the numbers of eyes and legs
+
+(defn spider-expander
+  "Multiplies number of eyes and legs"
+  [existing {:keys [name] :as body-part}]
+  (if (or (str/includes? name "eye")
+          (str/includes? name "leg"))
+    (apply conj existing (take 3 (repeat body-part)))
+    existing))
+
+(defn symmetric-expander
+  "Adds matching right part"
+  [existing {:keys [name] :as body-part}]
+  (if (str/includes? name "left")
+    (conj existing (update body-part :name #(str/replace % #"^left-" "right-")))
+    existing))
+
+(defn expand-body-parts
+  "More generic version of symmetrize-body-parts that takes an expander fn in addition to the list to let model more that just hobbits."
+  [expander-fn asym-body-parts]
+  (reduce expander-fn asym-body-parts asym-body-parts))
+
