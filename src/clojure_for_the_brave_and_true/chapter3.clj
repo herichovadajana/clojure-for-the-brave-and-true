@@ -69,8 +69,9 @@
     (conj existing (update body-part :name #(str/replace % #"^left-" "right-")))
     existing))
 
-(defn expand-body-parts
-  "More generic version of symmetrize-body-parts that takes an expander fn in addition to the list to let model more that just hobbits."
-  [expander-fn asym-body-parts]
-  (reduce expander-fn asym-body-parts asym-body-parts))
+(defn symmetric-spider
+  "Spider and symmetric expander application"
+  [asym-body-parts]
+  (let [symmetrized-body-parts (reduce symmetric-expander asym-body-parts asym-body-parts)]
+    (reduce spider-expander symmetrized-body-parts symmetrized-body-parts)))
 
