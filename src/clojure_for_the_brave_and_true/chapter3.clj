@@ -75,3 +75,56 @@
   (let [symmetrized-body-parts (reduce symmetric-expander asym-body-parts asym-body-parts)]
     (reduce spider-expander symmetrized-body-parts symmetrized-body-parts)))
 
+;; Closing chapter exercises
+
+;; 1. Use the str, vector, list, hash-map and hash-set functions
+
+(str "Stumble" "bum")
+
+(vector 1 2 3)
+
+(list "a" "b" "c")
+
+(hash-map :sunday "funday" :monday "glumday" :tuesday "newsday" :wednesday "friendsday" :thursday "blursday" :friday "highday" :saturday "fatterday")
+
+(hash-set 1 2 2 3 4 4)
+
+;; 2. Write a function that takes a number and adds 100 to it
+
+(defn add100 [x]
+  (+ x 100))
+
+;; 3. write a function dec-maker
+
+(defn dec-maker [x] #(- % x))
+;; 4. write a function, mapset, that works exactly like a map except the returned value is a set
+
+(defn mapset [fn coll]
+  (set (map fn coll)))
+
+;; 5. Function that's similar to symmetrize-body-parts except it has to work with aliens that instead id two eyes arms legs and so on they have five
+
+(defn symmetrize-alien
+  "symmetrize all symmetrical bodypart with rotational symmetry order 5"
+  [asym-body-parts]
+  (let [parts-to-symmetrize? (group-by #(str/includes? (:name %) "left") asym-body-parts)]
+    (reduce (fn [acc body-part]
+              (apply conj acc (take 5 (repeat (update body-part :name #(str/replace % #"^left-" ""))))))
+            (get parts-to-symmetrize? false)
+            (get parts-to-symmetrize? true))))
+
+
+;; 6. Function that generalizes symmetrize-body-parts and symmetrize-alien. Function should take a coll of body parts and the number of matching parts to add
+
+(defn better-symmetrize-body-parts
+  "Symmetrize all symmetrical body parts with symmetry order given in argument"
+  [asym-body-parts symmetry-order]
+  (let [parts-to-symmetrize? (group-by #(str/includes? (:name %) "left") asym-body-parts)]
+    (reduce (fn [acc body-part]
+              (apply conj acc (if (= symmetry-order 2)
+                                [body-part (update body-part :name #(str/replace % #"^left-" "right-"))]
+                                (->> (update body-part :name #(str/replace % #"^left-" ""))
+                                     repeat
+                                     (take symmetry-order)))))
+            (get parts-to-symmetrize? false)
+            (get parts-to-symmetrize? true))))
