@@ -4,12 +4,13 @@
 
 ;; Test are comparing results of my solutions to results of solutions written in book
 
-(def body-part {:name "left-arm" :size 10})
+(def body-part-left-leg {:name "left-leg" :size 10})
+(def body-part-eye {:name "eye" :size 1})
 (def symetric-body-part {:name "head" :size 2})
 
 (deftest matching-part
-  (is (= (ch3/matching-part body-part)
-         (ch3/matching-part-bs body-part)))
+  (is (= (ch3/matching-part body-part-left-leg)
+         (ch3/matching-part-bs body-part-left-leg)))
   (is (= (ch3/matching-part symetric-body-part)
          (ch3/matching-part-bs symetric-body-part))))
 
@@ -21,3 +22,9 @@
     (is (= (set (ch3/symmetrize-body-parts ch3/asym-hobbit-body-parts))
            (set (ch3/symmetrize-body-parts-bs ch3/asym-hobbit-body-parts))))))
 
+;; This exercise is without solution in book
+
+(deftest symmetric-spider
+  (testing "that function symmtrize and expands body parts"
+    (is (= (count (ch3/symmetric-spider ch3/asym-hobbit-body-parts))
+           (+ 12 (count (ch3/symmetrize-body-parts ch3/asym-hobbit-body-parts)))))))
